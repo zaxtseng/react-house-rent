@@ -22,6 +22,7 @@ npm start
 ```
 ## 环境配置
 1. less配置
+
 通过`npm install less less-loader -S`安装less.
 `npm eject`加载webpack配置,打开`config/webpack.config.js`文件,
 找到`sass`配置,复制一份.改为less配置.
@@ -61,6 +62,7 @@ const lessModuleRegex = /\.module\.less$/;
 ## 经验之谈
 >如果出现`Cannot find module 'resolve'`报错,说明依赖没有安装好,大部分是网络原因,运行`npm install`重新安装一次就好了.
 2. rem配置
+
 在index.html中的`<header>`最后位置放入下列代码.
 ```js
 <script>
@@ -99,15 +101,18 @@ const lessModuleRegex = /\.module\.less$/;
 css,iconfont,images
 
 4. 路由支持
+
 `npm install react-router react-router-dom --save`
 
 `router`文件夹下创建`AppRouter.jsx`文件,将该文件导出挂载到`app.js`文件内作为组件.
 `AppRouter`文件引入`{Route, HashRouter, Switch}`,pages下各个页面,将路径和component填入各个`Route`中.
 
 5. css文件初始化
+
 在`static/common.less`中将样式初始化,或者直接引入`normalize.css`.
 
 6. 底部导航
+
 引入iconfont字体图标库.在index.js中也引入.
 底部导航是公共组件,在components下创建FootNav文件夹.
 引入router的NavLink,因为需要点击跳转.(注意首页的路径使用exact精确匹配)
@@ -115,10 +120,12 @@ css,iconfont,images
 在各个底部菜单放入图标`<i className="">`引入各个图标.
 
 7. HomeHeader
+
 创建`Home/HomeHeader`,按照划分分为3部分,`home-header-left,right,middle`.
 其中`home-header-middle`部分包含一个`search-container`,之中包含一个iconfont和一个`input`.
 
 8. 轮播图
+
 安装swiper
 ```js
 npm install --save react-swipeable-views
@@ -144,7 +151,7 @@ Swiper中直接将得到的`this.props.banners`用`map`方法遍历到`Swipeable
 //转化为[1,1,1]
 const dotsArr = new Array(dots).fill(1)
 ```
-将数组map到li中.
+将数组map到`<li></li>`中.
 #### 将小点和轮播图绑定
 给`<SwipeableViews>`绑定事件,滑动到的当前的图的下标currentIndex,给赋值到index,传递给`<Pagination />`,
 它得到currentIndex后拿到`<li>`中进行判断,
@@ -152,12 +159,14 @@ const dotsArr = new Array(dots).fill(1)
 <li className={currentIndex === index ? "selected" : ""}>
 ```
 9. 搭建服务器
+
 在项目根目录创建mock文件夹(或者server).
 包含config,index,router文件和一个data文件夹.
 data文件夹下创建home文件夹,热销商品数据`hotdata.js`.
 安装express,`node index.js`启动.
 
 10. 跨域问题
+
 安装`npm install http-proxy-middleware --save`
 创建`src/setupProxy.js`文件
 ```js
@@ -169,7 +178,8 @@ module.exports = function(app) {
 
 ```
 11. Http处理网络请求
-utils文件夹下创建http.js
+
+`utils`文件夹下创建`http.js`
 主要由两个函数构成,`getData, postData`
 ```js
 import qs from 'querystring'
@@ -182,6 +192,7 @@ export function getDate(url){
 export ...
 ```
 12. 创建API
+
 创建`src/api/base.js`和index.js,homehot.js.
 ```js
 //base.js
@@ -216,6 +227,7 @@ export default {homehot}
 ```
 
 13. 创建HomeHot文件夹
+
 引入api.在componentDidMount中调用api请求数据.
 ```js
 componentDidMount(){
@@ -225,15 +237,18 @@ componentDidMount(){
 }
 ```
 14. 分离HomeHot的UI
+
 创建`./HomeHot/HomeHotView`.
 将data传入HomeHotView,HomeHotView中map遍历数据data,放在li中.
 创建style.less样式.
 
 15. 城市选项
+
 创建`src/pages/City`.将相关引入放到router中.
 给北京添加`<Link>`,可以点击跳转到城市页面.
 
 16. 城市选择页面
+
 创建公共头部`component/Header`.
 有一个返回箭头,一个title.其中title由使用页面传参
 返回箭头绑定返回事件.
@@ -241,9 +256,11 @@ componentDidMount(){
 `this.props.history.push("/home")`
 
 17. 当前城市
+
 创建`./City/CurrentCity`,city也是从父级传递过来.
 
 18. 热门城市
+
 创建`./City/HotCity`.
 点击传递参数时,建议使用bind传参,属于隐式传递.使用箭头函数属于显式传递.
 此时事件定义时就不能用箭头函数了.
@@ -261,10 +278,15 @@ clickHandler(cityName){
 ```
 
 19. 创建Redux
+
 由于每个页面都需要获取城市信息,所以需要使用Redux存储.
+
 安装redux
+
 `npm install --save redux react-redux`
+
 安装redux调试工具
+
 `npm install --save-dev redux-dectools`
  创建`src/store/index.js`,`src/actions/city.js`,`src/actions/index.js`和`src/reducer/index.js`.
  再创建constants文件用于定义基本字符串.
@@ -293,6 +315,7 @@ export function updateCity(data) {
 }
 ```
 创建city的Reducer
+
 ```js
 //src/reducers/city.js
 import * as cityActions from '../constants/city'
@@ -311,6 +334,7 @@ export default function city(state = initState, action ){
 }   
 ```
 合并Reducer
+
 ```js
 //src/reducers/index.js
 import { combineReducers } from "redux"
@@ -335,6 +359,7 @@ export default function configureStore(){
 ```
 
 20. 使用Redux
+
 主入口文件index.js进行关联.
 ```js
 //index.js
@@ -350,9 +375,12 @@ ReactDOM.render(
 );
 ```
 创建初始化页面`src/pages/app.jsx`
+
 在index页面包裹所有的二级路由,并且路径指向首页
+
 初始化项目需求
 1.1 城市初始化
+
 引入`bindActionCreators`,`connect`
 ```js
 //app.js
@@ -390,6 +418,7 @@ export default connect(
 
 ```
 1.2 在Home页面引入读取操作
+
 ```js
 import { connect } from 'react-redux'
 
@@ -406,11 +435,15 @@ export default connect(
 1.3 在City页面也要引入
 
 1.4 将HotCity选中的城市传递到主组件City
+
 定义自定义事件进行传递
+
 传递之后,引入mapDispatchToProps触发修改
+
 改变之后,返回上一页面
 
 1.5 传递城市信息
+
 修改mock中参数
 ```js
 //mock/router.js
@@ -438,6 +471,7 @@ const city = this.props.city || localStorage.getItem("city") ||  '北京'
 ```
 
 21. 搜索框
+
 搜索框可复用,放在公共组件component中.创建`SearchInput`组件.绑定相应事件.
 创建`src/pages/Search`页面.在路由中引入
 搜索框组件中,绑定按下Enter开始搜索
@@ -455,6 +489,7 @@ keyUpHandler = (event)=>{
 由于history在组件SearchInput中并没有(只有直接被路由管理的才有),需要从父组件HomeHeader中获取,也没有,继续向上索取,
 最后在Home组件中获取.
 22. 搜索页面
+
 搜索后跳转到搜索页面,创建搜索页面的顶部搜索框<SearchHeader>,依旧传入history.
 搜索时所填入的数据需要带到搜索页面,用到路由传参.
 在路由中
@@ -471,6 +506,7 @@ this.props.match.params.content
 ```
 
 23. 搜索服务器
+
 创建`mock/data/search/index.js`
 在`mock/router.js`创建搜索接口
 ```js
@@ -485,6 +521,7 @@ router.get("/search",function(req,res){
 })
 ``` 
 24. 添加API
+
 创建`api/search`
 ```js
 // 搜索接口
@@ -501,6 +538,7 @@ export default search
 `/api/index`中引入再导出.
 
 25. Search页面
+
 创建处理搜索结果的页面SearchList
 SearchList下创建SearchListView
 SearchListView下创建Item
@@ -554,8 +592,8 @@ return (
         </div>
     </div>
 ```
-再次请求的刷新问题
-在生命周期的componentDidUpdate中再次请求
+#### 再次请求的刷新问题
+在生命周期的`componentDidUpdate`中再次请求
 这时组件渲染之后加载
 将多次使用的api函数封装成一个函数
 ```js
@@ -569,9 +607,9 @@ http(city,content){
         })
      }
 ```
-将上面的函数在componentDidMount和componentUpdate中分别调用.
+将上面的函数在`componentDidMount`和`componentDidUpdate`中分别调用.
 注意这里容易死循环,组件更新后data被setState重新赋值,然后更新,更新后得到新的参数,又继续更新.死循环.
-解决办法:
+>解决办法:
 加上判断,componentDidUpdate有两个参数,prevProps和prevState,表示上一次的属性和state.
 比较本次搜索的content和上次是否相等,如果是,就return.
 否则,发起网络请求.
@@ -587,9 +625,10 @@ componentDidUpdate(prevProps,prevState){
 }
 ```
 26. 搜索详情页的瀑布流
-封装上拉加载组件LoadMore
-判断是否加载到LoadMore，监听滚动事件.
-获取元素偏移量,创建Refs.
+
+封装上拉加载组件`LoadMore`
+判断是否加载到`LoadMore`，监听滚动事件.
+获取元素偏移量,创建`Refs`.
 ```js
 
 constructor(){
@@ -608,7 +647,7 @@ render(){
     )
 }
 ```
-滚动事件需要加上函数防抖,只要滚动就不加载触发函数,稍等100ms后加载一次.这就是函数防抖debounce.
+滚动事件需要加上函数防抖,只要滚动就不加载触发函数,稍等100ms后加载一次.这就是函数防抖`debounce`.
 ```js
 //loadMore.js
 componentDidMount(){
@@ -673,10 +712,12 @@ const search = {
 添加hasMore参数,判断是否还有数据.
 
 27. 详情页路由配置
+
 创建`pages/Details`.路由中增加详情页.
 在Item页面进行路由传参,item由Link包裹.`<Link to={`/detail/${item.id}`}>`
 
 28. 详情页服务端配置
+
 创建`mock/data/details/index.js`.
 在`mock/router.js`中增加详情接口.
 ```js
@@ -708,6 +749,7 @@ export default details;
 其他文件中增加detail的选项.
 
 30. detailData分离
+
 创建`page/Details/DetailsData`.用来请求数据.
 在detail中把id传递进去.
 ```js
@@ -750,6 +792,7 @@ export default class index extends Component {
 DetailsDataView需要多个公共组件,可以直接引入.
 
 31. Tab切换
+
 创建公共组件Tabs.
 使用React.children.map()去遍历子元素.
 绑定onClick事件给点击的绑定高亮.将index赋值给currentIndex.
@@ -778,6 +821,7 @@ check_item_index = index=>{
 32. 将信息放到Tabs内
 
 33. 增加评论服务端数据
+
 创建`mock/data/comment`.
 增加`mock/router`评论接口.
 ```js
@@ -789,10 +833,12 @@ router.get("/comment", function(req,res){
 })
 ```
 34. 增加api中comment
+
 35. 创建详情页DetailData的CommentView组件
 将其中的Item拆分出来
 
 36. Star组件
+
 创建公共组件Star.
 使用数组判断星星是否高亮.
 ```js
@@ -814,6 +860,7 @@ render(){
 ```
 
 37. 登录页面
+
 创建`pages/Login`页面,储存到Redux.
 引入到路由.
 创建`actions/userinfo.js`
@@ -823,6 +870,7 @@ render(){
 绑定到Login页面,通过绑定事件loginHandler获取user
 
 38. 收藏功能
+
 新增`pages/Details/DetailsData/StoreBuy/StoreBuyView`.
 在DetailsDataView中引入.
 收藏页面也增加Redux的连接.点击收藏存在redux中.
@@ -890,6 +938,7 @@ isStore = ()=>{
 ```
 
 39. 购物车功能
+
 创建`pages/ShopCart`.
 子组件在创建`OrderView`和`UserView`
 给`HomeHeader`中购物车图标增加`Link`标签跳转.
@@ -908,6 +957,7 @@ const userinfo = this.props.userinfo.name
 ```
 
 40. 新增order的服务端数据
+
 创建`mock/data/order`文件夹.
 
 ```js
@@ -963,6 +1013,7 @@ router.post("/ordercomment",function(req,res){
 })
 ```
 41. 新增order的api
+
 创建`api/order`和`api/ordercomment`.
 在`base.js`中新增order和ordercomment的路由.
 在`index.js`中新增order和ordercomment的引入.
@@ -983,6 +1034,7 @@ export default orderComment
 ```
 
 42. 网络请求
+
 引入api,在登录后发送网络请求
 ```js
 //shopcar
@@ -1013,6 +1065,7 @@ componentWillMount(){
 }
 ```
 43. 数据接收渲染
+
 OrderView接收上级传过来的数据,使用map渲染到页面.
 ```js
 render(){
@@ -1052,6 +1105,7 @@ render() {
 }
 ```
 45. 添加评价
+
 给评价绑定事件.
 评价状态commentState的值0,1,2分别代表未评价,评价中,已评价.
 ```js
@@ -1076,6 +1130,7 @@ this.state.commentState === 1 ?
 ```
 
 50. 评价事件提交到后台
+
 后台mock/router里创建评价接口.
 ```js
 //mock/router.js
@@ -1097,6 +1152,7 @@ app.use(bodyParser.urlencoded({
 }))
 ```
 51. 增加相关API
+
 创建`api/ordercomment`
 ```js
 // 订单评价接口
